@@ -41,7 +41,7 @@ public class TestResource {
     return new DTO("&<");
   }
 
-  @XmlRootElement(name = "dto")
+  @XmlRootElement(name = "model")
   public static class DTO {
     @XmlElement
     public String string;

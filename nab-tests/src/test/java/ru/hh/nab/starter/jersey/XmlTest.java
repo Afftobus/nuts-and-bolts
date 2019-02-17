@@ -29,13 +29,13 @@ public class XmlTest extends NabTestBase {
 
     response = createRequest("/special").accept(APPLICATION_XML).get();
     assertEquals(
-      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><dto><string>&amp;&lt;</string></dto>",
+      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><model><string>&amp;&lt;</string></model>",
       response.readEntity(String.class)
     );
 
     response = createRequest("/0A").accept(APPLICATION_XML).get();
     assertEquals(
-      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><dto><string>\n</string></dto>",
+      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><model><string>\n</string></model>",
       response.readEntity(String.class)
     );
   }
