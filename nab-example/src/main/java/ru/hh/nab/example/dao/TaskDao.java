@@ -16,13 +16,9 @@ public interface TaskDao {
 
     boolean deleteTask(SingleTask task);
 
-    boolean deleteTask(int taskId);
+    boolean deleteTask(String taskId);
 
     boolean changeTask(SingleTask task);
 
-    boolean setActive(boolean isActive);
-
-    boolean massChange(String jsonRequest);
-
-    boolean removeCompleted();
+    boolean massChange(SingleTask[] tasks);
 }

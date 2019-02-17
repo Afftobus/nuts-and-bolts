@@ -1,6 +1,5 @@
 package ru.hh.nab.example;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.hh.nab.example.model.SingleTask;
 
 import ru.hh.nab.example.dao.DaoFactory;
@@ -10,12 +9,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/")
-@CrossOrigin(origins = "*", maxAge = 2000, allowCredentials = "true")
 public class ExampleResource {
 
     private final DaoFactory daoFactory = DaoFactory.getDaoFactory("collection");
@@ -23,18 +22,7 @@ public class ExampleResource {
     @GET
     @Path("/hello")
     public String hello(@DefaultValue("world") @QueryParam("name") String name) {
-        daoFactory.populateTestData();
         return String.format("Hello, %s!", name);
-    }
-
-    @GET
-    @Path("/get")
-    @Produces(MediaType.APPLICATION_JSON)
-    public SingleTask getSingleTask() {
-
-        SingleTask track = new SingleTask();
-        track.setTitle("Enter Sandman");
-        return track;
     }
 
     @GET
@@ -58,19 +46,20 @@ public class ExampleResource {
         return daoFactory.getTaskDao().getComleted();
     }
 
-
     @POST
     @Path("/mass_change")
     @Produces(MediaType.APPLICATION_JSON)
-    public String massChange(String jsonRequest) {
-        daoFactory.getTaskDao().massChange(jsonRequest);
-        System.out.println(jsonRequest);
-        return jsonRequest;
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String massChange(SingleTask[] tasks) {
+        System.out.println("public SingleTask massChange");
+        daoFactory.getTaskDao().massChange(tasks);
+        return "{\"result\":\"success\"}";
     }
 
     @POST
     @Path("/add_new")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String addNew(String jsonRequest) {
         System.out.println(jsonRequest);
         return jsonRequest;

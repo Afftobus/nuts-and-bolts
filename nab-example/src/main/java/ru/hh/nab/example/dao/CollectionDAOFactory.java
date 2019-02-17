@@ -16,7 +16,7 @@ public class CollectionDAOFactory extends DaoFactory {
     public void populateTestData() {
         ((TaskDaoImpl) taskDao).clean();
 
-        taskDao.addTask(new SingleTask("FirstTask",  true));
-        taskDao.addTask(new SingleTask("FirstTask", false));
+        taskDao.addTask(new SingleTask("fbhwaeifg uawigf uoiaw", "FirstTask", true));
+        taskDao.addTask(new SingleTask("fbhwaeifg uf uog awiaw", "FirstTask", false));
     }
 }

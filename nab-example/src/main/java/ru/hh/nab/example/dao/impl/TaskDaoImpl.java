@@ -6,13 +6,15 @@ import ru.hh.nab.example.model.SingleTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class TaskDaoImpl implements TaskDao {
 
-    private ConcurrentHashMap<Long, SingleTask> allTasks = new ConcurrentHashMap<>(1000, 0.75f, 6);
-    private AtomicLong currentId = new AtomicLong(0);
+    private ConcurrentHashMap<String, SingleTask> allTasks = new ConcurrentHashMap<>(1000, 0.75f, 6);
+
+    public List<SingleTask> getAllWithDeleted() {
+        return new ArrayList<>(allTasks.values());
+    }
 
     public List<SingleTask> getAll() {
         return new ArrayList<>(allTasks.values());
@@ -22,7 +24,7 @@ public class TaskDaoImpl implements TaskDao {
         List<SingleTask> all = new ArrayList<>(allTasks.values());
 
         return all.stream()
-                .filter(value -> value.isActive())
+                .filter(value -> !value.isCompleted())
                 .collect(Collectors.toList());
     }
 
@@ -30,43 +32,38 @@ public class TaskDaoImpl implements TaskDao {
         List<SingleTask> all = new ArrayList<>(allTasks.values());
 
         return all.stream()
-                .filter(value -> !value.isActive())
+                .filter(value -> !value.isCompleted())
                 .collect(Collectors.toList());
     }
 
     public boolean addTask(SingleTask task) {
-        SingleTask newTask = new SingleTask(currentId.incrementAndGet(), task);
-        allTasks.put(newTask.getId(), newTask);
-        return false;
+        SingleTask newTask = new SingleTask(task);
+        return allTasks.put(newTask.getId(), newTask) != null;
     }
 
     public boolean deleteTask(SingleTask task) {
-        return false;
+        return allTasks.remove(task.getId())!= null;
     }
 
-    public boolean deleteTask(int taskId) {
-        return false;
+    public boolean deleteTask(String taskId) {
+        return allTasks.remove(taskId)!= null;
     }
 
     public boolean changeTask(SingleTask task) {
-        return false;
+        return allTasks.replace(task.getId(), task) != null;
     }
 
-    public boolean setActive(boolean isActive) {
-        return false;
+    public boolean massChange(SingleTask[] tasks) {
+        allTasks.clear();
+        for (SingleTask task : tasks) {
+            allTasks.put(task.getId(), task);
+        }
+
+        return true;
     }
 
-    public boolean removeCompleted() {
-        return false;
-    }
-
-    public boolean massChange(String jsonRequest)
-    {
-        return false;
-    }
-
-    public boolean clean() {
-        return false;
+    public void clean() {
+        allTasks.clear();
     }
 
 }

@@ -1,33 +1,29 @@
 package ru.hh.nab.example.model;
 
 public class SingleTask {
-    private Long id;
+    private String id;
     private String title;
-    private boolean active;
-    private boolean deleted;
+    private boolean completed;
 
-    public SingleTask(
-            Long id,
-            SingleTask source) {
-        this.id = id;
+    public SingleTask(SingleTask source) {
+        this.id = source.id;
         this.title = source.title;
-        this.active = source.active;
-        this.deleted = source.deleted;
+        this.completed = source.completed;
     }
 
     public SingleTask(
+            String id,
             String title,
-            boolean active) {
-        this.id = 0L;
+            boolean completed) {
+        this.id = id;
         this.title = title;
-        this.active = active;
-        this.deleted = false;
+        this.completed = completed;
     }
 
     public SingleTask() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -39,16 +35,12 @@ public class SingleTask {
         this.title = title;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isCompleted() {
+        return completed;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean delete() {
-        return false;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     @Override
@@ -71,14 +63,8 @@ public class SingleTask {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = 31 * id.hashCode();
         result += 31 * result + title.hashCode();
         return result;
     }
-
-
-//    @Override
-//    public String toString() {
-//        return "Track [title=" + title + ", singer=" + description + "]";
-//    }
 }
