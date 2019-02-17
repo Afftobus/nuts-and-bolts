@@ -22,5 +22,7 @@ public interface TaskDao {
 
     boolean setActive(boolean isActive);
 
+    boolean massChange(String jsonRequest);
+
     boolean removeCompleted();
 }

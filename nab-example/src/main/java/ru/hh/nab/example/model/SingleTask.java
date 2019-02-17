@@ -3,34 +3,25 @@ package ru.hh.nab.example.model;
 public class SingleTask {
     private Long id;
     private String title;
-    private String description;
-    private String date;
-    private int creator;
     private boolean active;
+    private boolean deleted;
 
     public SingleTask(
             Long id,
             SingleTask source) {
         this.id = id;
         this.title = source.title;
-        this.description = source.description;
-        this.date = source.date;
-        this.creator = source.creator;
         this.active = source.active;
+        this.deleted = source.deleted;
     }
 
     public SingleTask(
             String title,
-            String description,
-            String date,
-            int creator,
             boolean active) {
         this.id = 0L;
         this.title = title;
-        this.description = description;
-        this.date = date;
-        this.creator = creator;
         this.active = active;
+        this.deleted = false;
     }
 
     public SingleTask() {
@@ -48,36 +39,16 @@ public class SingleTask {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getCreator() {
-        return creator;
-    }
-
-    public void setCreator(int creator) {
-        this.creator = creator;
-    }
-
     public boolean isActive() {
         return active;
     }
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean delete() {
+        return false;
     }
 
     @Override
@@ -95,15 +66,7 @@ public class SingleTask {
             return false;
         }
 
-        if (!title.equals(task.title)) {
-            return false;
-        }
-
-        if (!date.equals(task.date)) {
-            return false;
-        }
-
-        return description.equals(task.description);
+        return title.equals(task.title);
     }
 
     @Override

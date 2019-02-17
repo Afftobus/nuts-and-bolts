@@ -60,6 +60,11 @@ public class TaskDaoImpl implements TaskDao {
         return false;
     }
 
+    public boolean massChange(String jsonRequest)
+    {
+        return false;
+    }
+
     public boolean clean() {
         return false;
     }

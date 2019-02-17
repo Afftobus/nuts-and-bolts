@@ -5,7 +5,6 @@ import ru.hh.nab.example.model.SingleTask;
 
 import ru.hh.nab.example.dao.DaoFactory;
 
-import javax.ws.rs.PATCH;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.DefaultValue;
@@ -35,7 +34,6 @@ public class ExampleResource {
 
         SingleTask track = new SingleTask();
         track.setTitle("Enter Sandman");
-        track.setDescription("Metallica");
         return track;
     }
 
@@ -61,10 +59,13 @@ public class ExampleResource {
     }
 
 
-    @PATCH
-    @Path("/set_done")
-    public String setDone(@DefaultValue("world") @QueryParam("name") String name) {
-        return String.format("Hello, %s!", name);
+    @POST
+    @Path("/mass_change")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String massChange(String jsonRequest) {
+        daoFactory.getTaskDao().massChange(jsonRequest);
+        System.out.println(jsonRequest);
+        return jsonRequest;
     }
 
     @POST
