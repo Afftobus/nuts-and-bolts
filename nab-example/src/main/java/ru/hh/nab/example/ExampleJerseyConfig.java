@@ -4,6 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(ExampleResource.class)
+@Import({ExampleResource.class, FrontResourse.class, RestResourse.class})
 public class ExampleJerseyConfig {
 }

@@ -12,10 +12,6 @@ public class TaskDaoImpl implements TaskDao {
 
     private ConcurrentHashMap<String, SingleTask> allTasks = new ConcurrentHashMap<>(1000, 0.75f, 6);
 
-    public List<SingleTask> getAllWithDeleted() {
-        return new ArrayList<>(allTasks.values());
-    }
-
     public List<SingleTask> getAll() {
         return new ArrayList<>(allTasks.values());
     }
