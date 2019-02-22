@@ -1,23 +1,31 @@
 package ru.hh.nab.example.model;
 
-public class SingleTask {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class SingleTaskDTO {
+
+    @JsonProperty(required = true)
     private String id;
+
+    @JsonProperty(required = true)
     private String title;
+
+    @JsonProperty(required = true)
     private boolean completed;
 
-    public SingleTask(SingleTask source) {
+    public SingleTaskDTO(SingleTaskDTO source) {
         this.id = source.id;
         this.title = source.title;
         this.completed = source.completed;
     }
 
-    public SingleTask(SingleTaskDTO source) {
+    public SingleTaskDTO(SingleTask source) {
         this.id = source.getId();
         this.title = source.getTitle();
         this.completed = source.isCompleted();
     }
 
-    public SingleTask(
+    public SingleTaskDTO(
             String id,
             String title,
             boolean completed) {
@@ -26,7 +34,7 @@ public class SingleTask {
         this.completed = completed;
     }
 
-    public SingleTask() {
+    public SingleTaskDTO() {
     }
 
     public String getId() {
@@ -58,7 +66,7 @@ public class SingleTask {
             return false;
         }
 
-        SingleTask task = (SingleTask) o;
+        SingleTaskDTO task = (SingleTaskDTO) o;
 
         if (!id.equals(task.id)) {
             return false;
@@ -73,4 +81,5 @@ public class SingleTask {
         result += 31 * result + title.hashCode();
         return result;
     }
+
 }

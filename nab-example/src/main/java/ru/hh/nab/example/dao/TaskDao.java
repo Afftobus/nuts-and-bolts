@@ -20,5 +20,7 @@ public interface TaskDao {
 
     boolean changeTask(SingleTask task);
 
-    boolean massChange(SingleTask[] tasks);
+    boolean massChange(List<SingleTask> tasks);
+
+    void clean();
 }

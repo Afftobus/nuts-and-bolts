@@ -1,7 +1,7 @@
-package ru.hh.nab.example;
+package ru.hh.nab.example.resource;
 
-import ru.hh.nab.example.dao.DaoFactory;
-import ru.hh.nab.example.model.SingleTask;
+import ru.hh.nab.example.model.SingleTaskDTO;
+import ru.hh.nab.example.service.TodoItemService;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -13,38 +13,39 @@ import java.util.List;
 
 @Path("/rest")
 public class RestResourse {
-
-    private final DaoFactory daoFactory = DaoFactory.getDaoFactory("collection");
+    private final TodoItemService todoItemService = new TodoItemService();
 
     @GET
     @Path("/get_all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SingleTask> getAll() {
-        return daoFactory.getTaskDao().getAll();
+    public List<SingleTaskDTO> getAll() {
+        return todoItemService.getAll();
     }
 
     @GET
     @Path("/get_active")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SingleTask> getActive() {
-        return daoFactory.getTaskDao().getActive();
+    public List<SingleTaskDTO> getActive() {
+        return todoItemService.getActive();
     }
 
     @GET
     @Path("/get_completed")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SingleTask> getCompleted() {
-        return daoFactory.getTaskDao().getComleted();
+    public List<SingleTaskDTO> getCompleted() {
+        return todoItemService.getComleted();
     }
 
     @POST
     @Path("/mass_change")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String massChange(SingleTask[] tasks) {
-        System.out.println("public SingleTask massChange");
-        daoFactory.getTaskDao().massChange(tasks);
-        return "{\"result\":\"success\"}";
+    public String massChange(List<SingleTaskDTO> tasks) {
+        if (todoItemService.massChange(tasks)) {
+            return "{\"result\":\"success\"}";
+        } else {
+            return "{\"result\":\"error\"}";
+        }
     }
 
     @POST
@@ -55,5 +56,4 @@ public class RestResourse {
         System.out.println(jsonRequest);
         return jsonRequest;
     }
-
 }

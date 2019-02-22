@@ -49,7 +49,7 @@ public class TaskDaoImpl implements TaskDao {
         return allTasks.replace(task.getId(), task) != null;
     }
 
-    public boolean massChange(SingleTask[] tasks) {
+    public boolean massChange(List<SingleTask> tasks) {
         allTasks.clear();
         for (SingleTask task : tasks) {
             allTasks.put(task.getId(), task);

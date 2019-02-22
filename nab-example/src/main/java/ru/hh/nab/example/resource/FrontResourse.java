@@ -1,4 +1,4 @@
-package ru.hh.nab.example;
+package ru.hh.nab.example.resource;
 
 import java.io.File;
 import java.io.FileInputStream;

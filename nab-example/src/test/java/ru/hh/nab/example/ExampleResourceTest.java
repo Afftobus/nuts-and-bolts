@@ -2,6 +2,7 @@ package ru.hh.nab.example;
 
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
+import ru.hh.nab.example.resource.ExampleResource;
 import ru.hh.nab.starter.NabApplication;
 import ru.hh.nab.testbase.NabTestBase;
 

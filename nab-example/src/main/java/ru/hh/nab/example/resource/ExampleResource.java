@@ -1,4 +1,4 @@
-package ru.hh.nab.example;
+package ru.hh.nab.example.resource;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
