@@ -11,19 +11,22 @@
      * real life you probably would be making AJAX calls
      */
     function Store(name, callback) {
-        callback = callback || function () {};
+        callback = callback || function () {
+        };
 
         this._dbName = name;
 
         window.fetch("/rest/get_all")
             .then((response) => {
                 if (response.status !== 200) {
-                    throw new Error("Can't fetch response. Response status: " + response.status);
+                    throw new Error("Error. Status = " + response.status);
                 }
+                //console.log(response.json());
                 return response.json();
             })
             .then((data) => {
-                callback.call(this,  data);
+                //console.log(data);
+                callback.call(this, data);
             });
 
 
@@ -40,7 +43,7 @@
      * Finds items based on a query given as a JS object
      *
      * @param {object} query The query to match against (i.e. {foo: 'bar'})
-     * @param {function} callback	 The callback to fire when the query has
+     * @param {function} callback     The callback to fire when the query has
      * completed running
      *
      * @example
@@ -50,6 +53,10 @@
      * });
      */
     Store.prototype.find = function (query, callback) {
+
+        console.log("Store.prototype.find");
+        console.log(query);
+
         if (!callback) {
             return;
         }
@@ -72,10 +79,43 @@
      * @param {function} callback The callback to fire upon retrieving data
      */
     Store.prototype.findAll = function (callback) {
-        callback = callback || function () {};
-        callback.call(this, JSON.parse(localStorage.getItem(this._dbName)));
+        callback = callback || function () {
+        };
+
+
+        window.fetch("/rest/get_all")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Error. Status = " + response.status);
+                }
+                //console.log(response.json());
+                return response.json();
+            })
+            .then((data) => {
+                //console.log(data);
+                callback.call(this, data);
+            });
+
+        //callback.call(this, JSON.parse(localStorage.getItem(this._dbName)));
     };
 
+    Store.prototype.getCount = function (callback) {
+        callback = callback || function () {
+        };
+
+        window.fetch("/rest/get_count")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Error. Status = " + response.status);
+                }
+                //console.log(response.json());
+                return response.json();
+            })
+            .then((data) => {
+                //console.log(data);
+                callback.call(this, data);
+            });
+    };
     /**
      * Will save the given data to the DB. If no item exists it will create a new
      * item, otherwise it'll simply update an existing item's properties
@@ -85,9 +125,39 @@
      * @param {number} id An optional param to enter an ID of an item to update
      */
     Store.prototype.save = function (updateData, callback, id) {
+        console.log(updateData);
+        console.log(id);
+
+        if (id) {
+            updateData.id = id;
+            window.fetch('/rest/update_item', {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateData)
+            }).then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Error. Status = " + response.status);
+                }
+                //console.log(response.json());
+                return response.json();
+            })
+                .then((data) => {
+                    console.log(data);
+                    //callback.call(this, data);
+                });
+        } else {
+
+        }
+
+
+        return null;
         var todos = JSON.parse(localStorage.getItem(this._dbName));
 
-        callback = callback || function() {};
+        callback = callback || function () {
+        };
 
         // If an ID was actually given, find the item and update each property
         if (id) {

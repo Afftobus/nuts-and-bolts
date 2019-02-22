@@ -4,7 +4,9 @@ import ru.hh.nab.example.dao.DaoFactory;
 import ru.hh.nab.example.model.SingleTask;
 import ru.hh.nab.example.model.SingleTaskDTO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TodoItemService {
@@ -14,6 +16,15 @@ public class TodoItemService {
         return daoFactory.getTaskDao().getAll().stream()
                 .map(SingleTaskDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public Map<String, Long> getCount() {
+        Map<String, Long> result = new HashMap<>();
+        result.put("active", daoFactory.getTaskDao().getCountActive());
+        result.put("completed", daoFactory.getTaskDao().getCountConpleted());
+        result.put("total", daoFactory.getTaskDao().getCountTotal());
+
+        return result;
     }
 
     public List<SingleTaskDTO> getActive() {

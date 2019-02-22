@@ -11,7 +11,7 @@ public class SingleTaskDTO {
     private String title;
 
     @JsonProperty(required = true)
-    private boolean completed;
+    private Boolean completed;
 
     public SingleTaskDTO(SingleTaskDTO source) {
         this.id = source.id;
@@ -28,7 +28,7 @@ public class SingleTaskDTO {
     public SingleTaskDTO(
             String id,
             String title,
-            boolean completed) {
+            Boolean completed) {
         this.id = id;
         this.title = title;
         this.completed = completed;
@@ -49,11 +49,11 @@ public class SingleTaskDTO {
         this.title = title;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 

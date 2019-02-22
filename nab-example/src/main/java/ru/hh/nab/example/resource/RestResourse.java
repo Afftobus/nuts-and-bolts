@@ -8,12 +8,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Map;
 
 @Path("/rest")
 public class RestResourse {
     private final TodoItemService todoItemService = new TodoItemService();
+
+    RestResourse() {
+        todoItemService.addTask(new SingleTaskDTO("123123", "TEST FIRST TASK", false));
+    }
 
     @GET
     @Path("/get_all")
@@ -21,6 +27,26 @@ public class RestResourse {
     public List<SingleTaskDTO> getAll() {
         return todoItemService.getAll();
     }
+
+    @GET
+    @Path("/get_count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, Long> getCount() {
+        return todoItemService.getCount();
+    }
+
+    @PATCH
+    @Path("/update_item")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String updateItem(SingleTaskDTO task) {
+        if (todoItemService.changeTask(task)) {
+            return "{\"result\":\"success\"}";
+        } else {
+        return "{\"result\":\"error\"}";
+        }
+    }
+
 
     @GET
     @Path("/get_active")

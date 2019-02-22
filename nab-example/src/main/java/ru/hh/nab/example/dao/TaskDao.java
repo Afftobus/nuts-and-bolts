@@ -22,5 +22,11 @@ public interface TaskDao {
 
     boolean massChange(List<SingleTask> tasks);
 
+    long getCountActive();
+
+    long getCountConpleted();
+
+    long getCountTotal();
+
     void clean();
 }

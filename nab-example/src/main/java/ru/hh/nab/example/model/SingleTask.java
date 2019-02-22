@@ -3,7 +3,7 @@ package ru.hh.nab.example.model;
 public class SingleTask {
     private String id;
     private String title;
-    private boolean completed;
+    private Boolean completed;
 
     public SingleTask(SingleTask source) {
         this.id = source.id;
@@ -20,7 +20,7 @@ public class SingleTask {
     public SingleTask(
             String id,
             String title,
-            boolean completed) {
+            Boolean completed) {
         this.id = id;
         this.title = title;
         this.completed = completed;
@@ -41,11 +41,11 @@ public class SingleTask {
         this.title = title;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 

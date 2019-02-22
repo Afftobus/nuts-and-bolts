@@ -38,15 +38,22 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     public boolean deleteTask(SingleTask task) {
-        return allTasks.remove(task.getId())!= null;
+        return allTasks.remove(task.getId()) != null;
     }
 
     public boolean deleteTask(String taskId) {
-        return allTasks.remove(taskId)!= null;
+        return allTasks.remove(taskId) != null;
     }
 
     public boolean changeTask(SingleTask task) {
-        return allTasks.replace(task.getId(), task) != null;
+        SingleTask oldTask = allTasks.get(task.getId());
+        if (task.getTitle() != null) {
+            oldTask.setTitle(task.getTitle());
+        }
+        if (task.isCompleted() != null) {
+            oldTask.setCompleted(task.isCompleted());
+        }
+        return allTasks.replace(task.getId(), oldTask) != null;
     }
 
     public boolean massChange(List<SingleTask> tasks) {
@@ -57,6 +64,27 @@ public class TaskDaoImpl implements TaskDao {
 
         return true;
     }
+
+    public long getCountActive() {
+        List<SingleTask> all = new ArrayList<>(allTasks.values());
+
+        return all.stream()
+                .filter(value -> !value.isCompleted())
+                .count();
+    }
+
+    public long getCountConpleted() {
+        List<SingleTask> all = new ArrayList<>(allTasks.values());
+
+        return all.stream()
+                .filter(value -> value.isCompleted())
+                .count();
+    }
+
+    public long getCountTotal() {
+        return allTasks.values().size();
+    }
+
 
     public void clean() {
         allTasks.clear();
