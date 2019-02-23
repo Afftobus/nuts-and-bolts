@@ -61,16 +61,39 @@
             return;
         }
 
-        var todos = JSON.parse(localStorage.getItem(this._dbName));
+        //var url = new URL('/rest/find');
+        var search = new URLSearchParams(query).toString();
 
-        callback.call(this, todos.filter(function (todo) {
-            for (var q in query) {
-                if (query[q] !== todo[q]) {
-                    return false;
-                }
+        console.log(search);
+//        return;
+
+        window.fetch('/rest/find/?'+search, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            if (response.status !== 200) {
+                throw new Error("Error. Status = " + response.status);
             }
-            return true;
-        }));
+            return response.json();
+        })
+            .then((data) => {
+                console.log(data);
+                callback.call(this, data);
+            });
+
+        // var todos = JSON.parse(localStorage.getItem(this._dbName));
+        //
+        // callback.call(this, todos.filter(function (todo) {
+        //     for (var q in query) {
+        //         if (query[q] !== todo[q]) {
+        //             return false;
+        //         }
+        //     }
+        //     return true;
+        // }));
     };
 
     /**
@@ -125,8 +148,7 @@
      * @param {number} id An optional param to enter an ID of an item to update
      */
     Store.prototype.save = function (updateData, callback, id) {
-        console.log(updateData);
-        console.log(id);
+        callback = callback || function () {};
 
         if (id) {
             updateData.id = id;
@@ -141,45 +163,60 @@
                 if (response.status !== 200) {
                     throw new Error("Error. Status = " + response.status);
                 }
-                //console.log(response.json());
                 return response.json();
             })
                 .then((data) => {
                     console.log(data);
-                    //callback.call(this, data);
+                    callback.call(this, data);
                 });
         } else {
-
-        }
-
-
-        return null;
-        var todos = JSON.parse(localStorage.getItem(this._dbName));
-
-        callback = callback || function () {
-        };
-
-        // If an ID was actually given, find the item and update each property
-        if (id) {
-            for (var i = 0; i < todos.length; i++) {
-                if (todos[i].id === id) {
-                    for (var key in updateData) {
-                        todos[i][key] = updateData[key];
-                    }
-                    break;
+            window.fetch('/rest/add_new', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateData)
+            }).then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Error. Status = " + response.status);
                 }
-            }
-
-            localStorage.setItem(this._dbName, JSON.stringify(todos));
-            callback.call(this, todos);
-        } else {
-            // Generate an ID
-            updateData.id = new Date().getTime();
-
-            todos.push(updateData);
-            localStorage.setItem(this._dbName, JSON.stringify(todos));
-            callback.call(this, [updateData]);
+                return response.json();
+            })
+                .then((data) => {
+                    console.log(data);
+                    callback.call(this, data);
+                });
         }
+
+
+        // return null;
+        // var todos = JSON.parse(localStorage.getItem(this._dbName));
+        //
+        // callback = callback || function () {
+        // };
+        //
+        // // If an ID was actually given, find the item and update each property
+        // if (id) {
+        //     for (var i = 0; i < todos.length; i++) {
+        //         if (todos[i].id === id) {
+        //             for (var key in updateData) {
+        //                 todos[i][key] = updateData[key];
+        //             }
+        //             break;
+        //         }
+        //     }
+        //
+        //     localStorage.setItem(this._dbName, JSON.stringify(todos));
+        //     callback.call(this, todos);
+        // } else {
+        //     // Generate an ID
+        //     updateData.id = new Date().getTime();
+        //
+        //     todos.push(updateData);
+        //     localStorage.setItem(this._dbName, JSON.stringify(todos));
+        //     callback.call(this, [updateData]);
+        // }
     };
 
     /**

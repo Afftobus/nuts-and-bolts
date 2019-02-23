@@ -4,6 +4,7 @@ import ru.hh.nab.example.model.SingleTaskDTO;
 import ru.hh.nab.example.service.TodoItemService;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
@@ -16,9 +17,10 @@ import java.util.Map;
 @Path("/rest")
 public class RestResourse {
     private final TodoItemService todoItemService = new TodoItemService();
+    private Long id;
 
     RestResourse() {
-        todoItemService.addTask(new SingleTaskDTO("123123", "TEST FIRST TASK", false));
+        todoItemService.addTask(new SingleTaskDTO(null, "TEST FIRST TASK", false));
     }
 
     @GET
@@ -39,14 +41,9 @@ public class RestResourse {
     @Path("/update_item")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String updateItem(SingleTaskDTO task) {
-        if (todoItemService.changeTask(task)) {
-            return "{\"result\":\"success\"}";
-        } else {
-        return "{\"result\":\"error\"}";
-        }
+    public SingleTaskDTO updateItem(SingleTaskDTO task) {
+        return todoItemService.changeTask(task);
     }
-
 
     @GET
     @Path("/get_active")
@@ -78,8 +75,16 @@ public class RestResourse {
     @Path("/add_new")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addNew(String jsonRequest) {
-        System.out.println(jsonRequest);
-        return jsonRequest;
+    public SingleTaskDTO addNew(SingleTaskDTO task) {
+        return todoItemService.addTask(task);
     }
+
+
+    @GET
+    @Path("/find")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SingleTaskDTO> find(@QueryParam("id") Long id, @QueryParam("title") String title, @QueryParam("completed") Boolean completed) {
+        return todoItemService.find(id, title, completed);
+    }
+
 }

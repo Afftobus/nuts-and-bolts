@@ -94,23 +94,23 @@
 	 * Returns a count of all todos
 	 */
 	Model.prototype.getCount = function (callback) {
-		var todos = {
-			active: 0,
-			completed: 0,
-			total: 0
-		};
+		// var todos = {
+		// 	active: 0,
+		// 	completed: 0,
+		// 	total: 0
+		// };
 
 		this.storage.getCount(function (data) {
-			data.forEach(function (todo) {
-				if (todo.completed) {
-					todos.completed++;
-				} else {
-					todos.active++;
-				}
-
-				todos.total++;
-			});
-			callback(todos);
+			// data.forEach(function (todo) {
+			// 	if (todo.completed) {
+			// 		todos.completed++;
+			// 	} else {
+			// 		todos.active++;
+			// 	}
+			//
+			// 	todos.total++;
+			// });
+			callback(data);
 		});
 	};
 

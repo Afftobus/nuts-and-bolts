@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SingleTaskDTO {
 
     @JsonProperty(required = true)
-    private String id;
+    private Long id;
 
     @JsonProperty(required = true)
     private String title;
@@ -26,7 +26,7 @@ public class SingleTaskDTO {
     }
 
     public SingleTaskDTO(
-            String id,
+            Long id,
             String title,
             Boolean completed) {
         this.id = id;
@@ -37,7 +37,7 @@ public class SingleTaskDTO {
     public SingleTaskDTO() {
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

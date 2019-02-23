@@ -12,15 +12,17 @@ public interface TaskDao {
 
     List<SingleTask> getComleted();
 
-    boolean addTask(SingleTask task);
+    SingleTask addTask(SingleTask task);
 
     boolean deleteTask(SingleTask task);
 
     boolean deleteTask(String taskId);
 
-    boolean changeTask(SingleTask task);
+    SingleTask changeTask(SingleTask task);
 
     boolean massChange(List<SingleTask> tasks);
+
+    List<SingleTask> find(Long id, String title, Boolean completed);
 
     long getCountActive();
 

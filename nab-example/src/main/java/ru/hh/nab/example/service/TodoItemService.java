@@ -39,8 +39,12 @@ public class TodoItemService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addTask(SingleTaskDTO task) {
-        return daoFactory.getTaskDao().addTask(new SingleTask(task));
+    public SingleTaskDTO addTask(SingleTaskDTO task) {
+        SingleTask newTask = new SingleTask(task);
+        newTask = daoFactory.getTaskDao().addTask(newTask);
+
+        //return new SingleTaskDTO(daoFactory.getTaskDao().addTask(new SingleTask(task)));
+        return new SingleTaskDTO(newTask);
     }
 
     public boolean deleteTask(SingleTaskDTO task) {
@@ -51,14 +55,21 @@ public class TodoItemService {
         return daoFactory.getTaskDao().deleteTask(taskId);
     }
 
-    public boolean changeTask(SingleTaskDTO task) {
-        return daoFactory.getTaskDao().changeTask(new SingleTask(task));
+    public SingleTaskDTO changeTask(SingleTaskDTO task) {
+        return new SingleTaskDTO(daoFactory.getTaskDao().changeTask(new SingleTask(task)));
     }
 
     public boolean massChange(List<SingleTaskDTO> tasks) {
         return daoFactory.getTaskDao().massChange(tasks.stream()
                 .map(SingleTask::new)
                 .collect(Collectors.toList()));
+    }
+
+    public List<SingleTaskDTO> find(Long id, String title, Boolean completed) {
+        return daoFactory.getTaskDao().find(id, title, completed)
+                .stream()
+                .map(SingleTaskDTO::new)
+                .collect(Collectors.toList());
     }
 
     public void clean() {

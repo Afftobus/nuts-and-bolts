@@ -1,7 +1,7 @@
 package ru.hh.nab.example.model;
 
 public class SingleTask {
-    private String id;
+    private Long id;
     private String title;
     private Boolean completed;
 
@@ -18,7 +18,7 @@ public class SingleTask {
     }
 
     public SingleTask(
-            String id,
+            Long id,
             String title,
             Boolean completed) {
         this.id = id;
@@ -29,7 +29,7 @@ public class SingleTask {
     public SingleTask() {
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
