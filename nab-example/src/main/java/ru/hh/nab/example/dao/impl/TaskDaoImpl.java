@@ -51,7 +51,7 @@ public class TaskDaoImpl implements TaskDao {
         return allTasks.remove(task.getId()) != null;
     }
 
-    public boolean deleteTask(String taskId) {
+    public boolean deleteTask(Long taskId) {
         return allTasks.remove(taskId) != null;
     }
 

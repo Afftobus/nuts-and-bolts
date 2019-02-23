@@ -16,7 +16,7 @@ public interface TaskDao {
 
     boolean deleteTask(SingleTask task);
 
-    boolean deleteTask(String taskId);
+    boolean deleteTask(Long taskId);
 
     SingleTask changeTask(SingleTask task);
 

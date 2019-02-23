@@ -4,12 +4,14 @@ import ru.hh.nab.example.model.SingleTaskDTO;
 import ru.hh.nab.example.service.TodoItemService;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.PATCH;
+import javax.ws.rs.GET;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ public class RestResourse {
     private Long id;
 
     RestResourse() {
+        // делаю, чтобы сразу что-то было
         todoItemService.addTask(new SingleTaskDTO(null, "TEST FIRST TASK", false));
     }
 
@@ -45,31 +48,32 @@ public class RestResourse {
         return todoItemService.changeTask(task);
     }
 
-    @GET
-    @Path("/get_active")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<SingleTaskDTO> getActive() {
-        return todoItemService.getActive();
-    }
-
-    @GET
-    @Path("/get_completed")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<SingleTaskDTO> getCompleted() {
-        return todoItemService.getComleted();
-    }
-
-    @POST
-    @Path("/mass_change")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String massChange(List<SingleTaskDTO> tasks) {
-        if (todoItemService.massChange(tasks)) {
-            return "{\"result\":\"success\"}";
-        } else {
-            return "{\"result\":\"error\"}";
-        }
-    }
+// реализовывал для предыдущих итераций, но на данный момент рудименты.
+//    @GET
+//    @Path("/get_active")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<SingleTaskDTO> getActive() {
+//        return todoItemService.getActive();
+//    }
+//
+//    @GET
+//    @Path("/get_completed")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<SingleTaskDTO> getCompleted() {
+//        return todoItemService.getComleted();
+//    }
+//
+//    @POST
+//    @Path("/mass_change")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String massChange(List<SingleTaskDTO> tasks) {
+//        if (todoItemService.massChange(tasks)) {
+//            return "{\"result\":\"success\"}";
+//        } else {
+//            return "{\"result\":\"error\"}";
+//        }
+//    }
 
     @POST
     @Path("/add_new")
@@ -79,12 +83,22 @@ public class RestResourse {
         return todoItemService.addTask(task);
     }
 
-
     @GET
     @Path("/find")
     @Produces(MediaType.APPLICATION_JSON)
     public List<SingleTaskDTO> find(@QueryParam("id") Long id, @QueryParam("title") String title, @QueryParam("completed") Boolean completed) {
         return todoItemService.find(id, title, completed);
+    }
+
+    @DELETE
+    @Path("/delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String find(@PathParam("id") Long id) {
+        if (todoItemService.deleteTask(id)) {
+            return "{\"result\":\"success\"}";
+        } else {
+            return "{\"result\":\"error\"}";
+        }
     }
 
 }

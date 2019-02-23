@@ -51,7 +51,7 @@ public class TodoItemService {
         return daoFactory.getTaskDao().deleteTask(new SingleTask(task));
     }
 
-    public boolean deleteTask(String taskId) {
+    public boolean deleteTask(Long taskId) {
         return daoFactory.getTaskDao().deleteTask(taskId);
     }
 

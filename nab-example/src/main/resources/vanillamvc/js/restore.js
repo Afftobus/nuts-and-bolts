@@ -21,22 +21,12 @@
                 if (response.status !== 200) {
                     throw new Error("Error. Status = " + response.status);
                 }
-                //console.log(response.json());
                 return response.json();
             })
             .then((data) => {
                 //console.log(data);
                 callback.call(this, data);
             });
-
-
-        // if (!localStorage.getItem(name)) {
-        //     var todos = [];
-        //
-        //     localStorage.setItem(name, JSON.stringify(todos));
-        // }
-
-        //callback.call(this, JSON.parse(localStorage.getItem(name)));
     }
 
     /**
@@ -83,17 +73,6 @@
                 console.log(data);
                 callback.call(this, data);
             });
-
-        // var todos = JSON.parse(localStorage.getItem(this._dbName));
-        //
-        // callback.call(this, todos.filter(function (todo) {
-        //     for (var q in query) {
-        //         if (query[q] !== todo[q]) {
-        //             return false;
-        //         }
-        //     }
-        //     return true;
-        // }));
     };
 
     /**
@@ -118,8 +97,6 @@
                 //console.log(data);
                 callback.call(this, data);
             });
-
-        //callback.call(this, JSON.parse(localStorage.getItem(this._dbName)));
     };
 
     Store.prototype.getCount = function (callback) {
@@ -188,35 +165,6 @@
                     callback.call(this, data);
                 });
         }
-
-
-        // return null;
-        // var todos = JSON.parse(localStorage.getItem(this._dbName));
-        //
-        // callback = callback || function () {
-        // };
-        //
-        // // If an ID was actually given, find the item and update each property
-        // if (id) {
-        //     for (var i = 0; i < todos.length; i++) {
-        //         if (todos[i].id === id) {
-        //             for (var key in updateData) {
-        //                 todos[i][key] = updateData[key];
-        //             }
-        //             break;
-        //         }
-        //     }
-        //
-        //     localStorage.setItem(this._dbName, JSON.stringify(todos));
-        //     callback.call(this, todos);
-        // } else {
-        //     // Generate an ID
-        //     updateData.id = new Date().getTime();
-        //
-        //     todos.push(updateData);
-        //     localStorage.setItem(this._dbName, JSON.stringify(todos));
-        //     callback.call(this, [updateData]);
-        // }
     };
 
     /**
@@ -226,17 +174,22 @@
      * @param {function} callback The callback to fire after saving
      */
     Store.prototype.remove = function (id, callback) {
-        var todos = JSON.parse(localStorage.getItem(this._dbName));
-
-        for (var i = 0; i < todos.length; i++) {
-            if (todos[i].id == id) {
-                todos.splice(i, 1);
-                break;
+        window.fetch('/rest/delete/'+id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            if (response.status !== 200) {
+                throw new Error("Error. Status = " + response.status);
             }
-        }
-
-        localStorage.setItem(this._dbName, JSON.stringify(todos));
-        callback.call(this, todos);
+            return response.json();
+        })
+            .then((data) => {
+                console.log(data);
+                callback.call(this, data);
+            });
     };
 
     /**
